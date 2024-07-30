@@ -29,7 +29,7 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
     credentials: true,
-    origin: "https://airbnb-clone-frontend-khaki.vercel.app",
+    origin: "https://airbnb-clone-frontend-khaki.vercel.app/",
   })
 );
 app.use(cookieParser());
