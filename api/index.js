@@ -31,9 +31,12 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
     credentials: true,
-    origin: "https://airbnb-clone-frontend-khaki.vercel.app",
+    origin: true, // This will allow requests from any origin
   })
 );
+
+// Handle OPTIONS requests
+app.options("*", cors());
 
 app.use(cookieParser());
 mongoose.connect(
