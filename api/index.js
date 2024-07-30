@@ -31,7 +31,7 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
     credentials: true,
-    origin: true, // This will allow requests from any origin
+    origin: "*", // Allow requests from any origin
   })
 );
 
@@ -130,5 +130,12 @@ app.get("/bookings", async (req, res) => {
   const userData = await getUserDataFromToken(req);
   res.json(await Booking.find({ user: userData.id }).populate('place'));
 })
+
+// Add a catch-all route to handle undefined routes
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 module.exports = app;
