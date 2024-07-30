@@ -9,7 +9,7 @@ import { UserContextProvider } from "./UserContextProvider";
 import ProfilePage from "./pages/ProfilePage";
 import PlacesPage from "./pages/PlacesPage";
 import PlacesFormPage from "./pages/PlacesFormPage";
-axios.defaults.baseURL = "https://airbnb-clone-lel57o7jj-kumars-projects-74634024.vercel.app/";
+axios.defaults.baseURL = "https://airbnb-clone-api-alpha.vercel.app";
 axios.defaults.withCredentials = true;
 import PlacePage from "./pages/Placepage";
 import BookingsPage from "./pages/BookingsPage";
