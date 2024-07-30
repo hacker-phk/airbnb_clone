@@ -1,40 +1,43 @@
 const express = require("express");
 const cors = require("cors");
-const User = require("./models/user.js");
+const User = require("../models/user.js");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const fs = require("fs");
-const Place = require("./models/Place.js");
+const Place = require("../models/Place.js");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
 const app = express();
 app.use(express.json());
-const RegisterRoute = require("./routes/RegisterRoute.js");
-const Profile = require("./routes/Profile.js");
-const Login = require("./routes/Login.js");
-const deleteRoute = require("./routes/deleteRoute");
-const PlacesRoute = require("./routes/Places.js");
-const middleware = require("./middlewares.js");
-const PlaceById = require("./routes/PlaceById.js");
-const LogoutRoute = require("./routes/LogoutRoute.js");
-const UserPlaces = require("./routes/UserPlaces.js");
-const UpdatePlacesRoute = require("./routes/UpdatePlacesRoute.js");
-const Booking = require("./models/Booking.js");
-// middleware(app);
+const RegisterRoute = require("../routes/RegisterRoute.js");
+const Profile = require("../routes/Profile.js");
+const Login = require("../routes/Login.js");
+const deleteRoute = require("../routes/deleteRoute");
+const PlacesRoute = require("../routes/Places.js");
+const middleware = require("../middlewares.js");
+const PlaceById = require("../routes/PlaceById.js");
+const LogoutRoute = require("../routes/LogoutRoute.js");
+const UserPlaces = require("../routes/UserPlaces.js");
+const UpdatePlacesRoute = require("../routes/UpdatePlacesRoute.js");
+const Booking = require("../models/Booking.js");
+
 app.use("/uploads", express.static(__dirname + "/uploads"));
+
+// Add CORS middleware configuration here
 app.use(
   cors({
     credentials: true,
-    origin: "https://airbnb-clone-frontend-khaki.vercel.app",
+    origin: "https://airbnb-clone-frontend-leol6boyv-kumars-projects-74634024.vercel.app",
   })
 );
+
 app.use(cookieParser());
 mongoose.connect(
-  "mongodb+srv://mernlearn:VuFIdDFpn3iAmsK0@cluster0.ex40eey.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+  process.env.MONGODB_URI,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -61,7 +64,6 @@ app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
   const uploadedFiles = [];
 
   try {
-    
     for (let i = 0; i < req.files.length; i++) {
       const { path: tempPath, originalname } = req.files[i];
       const parts = originalname.split(".");
@@ -103,9 +105,8 @@ function getUserDataFromToken(req) {
   });
 }
 app.post("/bookings", async (req, res) => {
-  const userData= await getUserDataFromToken(req);
-  const { place, checkIn, checkOut, numberOfGuests, name, phone, price } =
-    req.body;
+  const userData = await getUserDataFromToken(req);
+  const { place, checkIn, checkOut, numberOfGuests, name, phone, price } = req.body;
   Booking.create({
     place,
     user: userData.id,
@@ -115,20 +116,16 @@ app.post("/bookings", async (req, res) => {
     name,
     phone,
     price,
-  }).then(( doc) => {
+  }).then((doc) => {
     res.json(doc);
   }).catch((err) => {
     throw err;
   });
-
 });
 
-
-app.get("/bookings",async (req,res) =>{
-  const userData= await getUserDataFromToken(req);
-  res.json(await Booking.find({user: userData.id}).populate('place'));
+app.get("/bookings", async (req, res) => {
+  const userData = await getUserDataFromToken(req);
+  res.json(await Booking.find({ user: userData.id }).populate('place'));
 })
 
-app.listen(5000, () => {
-  console.log("Listening on port 5000");
-});
+module.exports = app;
