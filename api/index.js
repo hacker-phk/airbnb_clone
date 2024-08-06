@@ -1,29 +1,29 @@
 const express = require("express");
 const cors = require("cors");
-const User = require("../models/user.js");
+const User = require("./models/user.js");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const fs = require("fs");
-const Place = require("../models/Place.js");
+const Place = require("./models/Place.js");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
 const app = express();
 app.use(express.json());
-const RegisterRoute = require("../routes/RegisterRoute.js");
-const Profile = require("../routes/Profile.js");
-const Login = require("../routes/Login.js");
-const deleteRoute = require("../routes/deleteRoute");
-const PlacesRoute = require("../routes/Places.js");
-const middleware = require("../middlewares.js");
-const PlaceById = require("../routes/PlaceById.js");
-const LogoutRoute = require("../routes/LogoutRoute.js");
-const UserPlaces = require("../routes/UserPlaces.js");
-const UpdatePlacesRoute = require("../routes/UpdatePlacesRoute.js");
-const Booking = require("../models/Booking.js");
+const RegisterRoute = require("./routes/RegisterRoute.js");
+const Profile = require("./routes/Profile.js");
+const Login = require("./routes/Login.js");
+const deleteRoute = require("./routes/deleteRoute");
+const PlacesRoute = require("./routes/Places.js");
+const middleware = require("./middlewares.js");
+const PlaceById = require("./routes/PlaceById.js");
+const LogoutRoute = require("./routes/LogoutRoute.js");
+const UserPlaces = require("./routes/UserPlaces.js");
+const UpdatePlacesRoute = require("./routes/UpdatePlacesRoute.js");
+const Booking = require("./models/Booking.js");
 
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
@@ -40,7 +40,7 @@ app.options("*", cors());
 
 app.use(cookieParser());
 mongoose.connect(
-  process.env.MONGODB_URI,
+  "mongodb+srv://mernlearn:VuFIdDFpn3iAmsK0@cluster0.ex40eey.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
