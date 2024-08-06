@@ -26,7 +26,12 @@ const UpdatePlacesRoute = require("./routes/UpdatePlacesRoute.js");
 const Booking = require("./models/Booking.js");
 // middleware(app);
 app.use("/uploads", express.static(__dirname + "/uploads"));
-app.use( cors());
+const corsOptions = {
+  origin: "https://66b2557e2981b9224c63869d--warm-pavlova-5815dd.netlify.app",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204
+};
 app.use(cookieParser());
 mongoose.connect(
   "mongodb+srv://mernlearn:VuFIdDFpn3iAmsK0@cluster0.ex40eey.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
