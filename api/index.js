@@ -24,20 +24,14 @@ const LogoutRoute = require("./routes/LogoutRoute.js");
 const UserPlaces = require("./routes/UserPlaces.js");
 const UpdatePlacesRoute = require("./routes/UpdatePlacesRoute.js");
 const Booking = require("./models/Booking.js");
-
+// middleware(app);
 app.use("/uploads", express.static(__dirname + "/uploads"));
-
-// Add CORS middleware configuration here
 app.use(
   cors({
     credentials: true,
-    origin: "*", // Allow requests from any origin
+    origin: "http://localhost:5173",
   })
 );
-
-// Handle OPTIONS requests
-app.options("*", cors());
-
 app.use(cookieParser());
 mongoose.connect(
   "mongodb+srv://mernlearn:VuFIdDFpn3iAmsK0@cluster0.ex40eey.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
@@ -67,6 +61,7 @@ app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
   const uploadedFiles = [];
 
   try {
+    
     for (let i = 0; i < req.files.length; i++) {
       const { path: tempPath, originalname } = req.files[i];
       const parts = originalname.split(".");
@@ -108,8 +103,9 @@ function getUserDataFromToken(req) {
   });
 }
 app.post("/bookings", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
-  const { place, checkIn, checkOut, numberOfGuests, name, phone, price } = req.body;
+  const userData= await getUserDataFromToken(req);
+  const { place, checkIn, checkOut, numberOfGuests, name, phone, price } =
+    req.body;
   Booking.create({
     place,
     user: userData.id,
@@ -119,23 +115,20 @@ app.post("/bookings", async (req, res) => {
     name,
     phone,
     price,
-  }).then((doc) => {
+  }).then(( doc) => {
     res.json(doc);
   }).catch((err) => {
     throw err;
   });
+
 });
 
-app.get("/bookings", async (req, res) => {
-  const userData = await getUserDataFromToken(req);
-  res.json(await Booking.find({ user: userData.id }).populate('place'));
+
+app.get("/bookings",async (req,res) =>{
+  const userData= await getUserDataFromToken(req);
+  res.json(await Booking.find({user: userData.id}).populate('place'));
 })
 
-// Add a catch-all route to handle undefined routes
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
+app.listen(5000, () => {
+  console.log("Listening on port 5000");
 });
-
-module.exports = app;
