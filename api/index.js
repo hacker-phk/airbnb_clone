@@ -26,12 +26,7 @@ const UpdatePlacesRoute = require("./routes/UpdatePlacesRoute.js");
 const Booking = require("./models/Booking.js");
 // middleware(app);
 app.use("/uploads", express.static(__dirname + "/uploads"));
-app.use(
-  cors({
-    credentials: true,
-    origin: "http://localhost:5173",
-  })
-);
+app.use( cors());
 app.use(cookieParser());
 mongoose.connect(
   "mongodb+srv://mernlearn:VuFIdDFpn3iAmsK0@cluster0.ex40eey.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
